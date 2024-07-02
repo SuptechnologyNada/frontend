@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <img id="hello" src="logo.png" alt="Logo">
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#" class="link active">HOME</a></li>
+                    <li><a href="infos.html" class="link">INFOS</a></li>
+                    <li><a href="contact.html" class="link">CONTACT</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="content">
+            <h3>Welcome To Your Own School</h3>
+            <p>Restez Informé Des Progrès Scolaires De Votre Enfant En Temps Réel</p>
+        </div>
+        <form class="form" id="loginForm">
+            <p class="heading">Login</p>
+            <input class="input" id="username" placeholder="Username" type="text" required>
+            <input class="input" id="password" placeholder="Password" type="password" required> 
+            <button id="button" class="btn" type="submit">Se Connecter</button>
+        </form>
+    </div>
+    <!-- Link Bootstrap JS (optional, but needed for modal functionality) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+    <!--swiper js link-->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        
+    <!-- JavaScript for login -->
+    <script>
+        // Form submission for login
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the form from submitting and reloading the page
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/ProjectPFa/loginServlet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: username, password: password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Response data:', data); // Log the response data for debugging
+
+                    if (data.success) {
+                        alert('Connexion réussie !');
+
+                        // Store the username and enfants_id from the response data in localStorage
+                        localStorage.setItem('username', username); 
+                        localStorage.setItem('enfants_id', data.enfants_id);
+
+                        console.log('Username:', username); // Log the username from the input field
+                        console.log('Enfants ID:', data.enfants_id); // Log the enfants_id from the response data
+
+                        window.location.href = 'page2.html'; // Redirect to the next page
+                    } else {
+                        console.error('Login failed:', data);
+                        alert('Login failed: ' + data.message);
+                    }
+                } else {
+                    const errorData = await response.json();
+                    console.error('Connexion échouée:', errorData.message);
+                    alert('Connexion échouée: ' + errorData.message);
+                }
+            } catch (error) {
+                console.error('Une erreur s\'est produite:', error);
+                alert('Une erreur s\'est produite. Veuillez réessayer.');
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <img id="hello" src="logo.png" alt="Logo">
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#" class="link active">HOME</a></li>
+                    <li><a href="infos.html" class="link">INFOS</a></li>
+                    <li><a href="contact.html" class="link">CONTACT</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="content">
+            <h3>Welcome To Your Own School</h3>
+            <p>Restez Informé Des Progrès Scolaires De Votre Enfant En Temps Réel</p>
+        </div>
+        <form class="form" id="loginForm">
+            <p class="heading">Login</p>
+            <input class="input" id="username" placeholder="Username" type="text" required>
+            <input class="input" id="password" placeholder="Password" type="password" required> 
+            <button id="button" class="btn" type="submit">Se Connecter</button>
+        </form>
+    </div>
+    <!-- Link Bootstrap JS (optional, but needed for modal functionality) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+    <!--swiper js link-->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        
+    <!-- JavaScript for login -->
+    <script>
+        // Form submission for login
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the form from submitting and reloading the page
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/ProjectPFa/loginServlet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: username, password: password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Response data:', data); // Log the response data for debugging
+
+                    if (data.success) {
+                        alert('Connexion réussie !');
+
+                        // Store the username and enfants_id from the response data in localStorage
+                        localStorage.setItem('username', username); 
+                        localStorage.setItem('enfants_id', data.enfants_id);
+
+                        console.log('Username:', username); // Log the username from the input field
+                        console.log('Enfants ID:', data.enfants_id); // Log the enfants_id from the response data
+
+                        window.location.href = 'page2.html'; // Redirect to the next page
+                    } else {
+                        console.error('Login failed:', data);
+                        alert('Login failed: ' + data.message);
+                    }
+                } else {
+                    const errorData = await response.json();
+                    console.error('Connexion échouée:', errorData.message);
+                    alert('Connexion échouée: ' + errorData.message);
+                }
+            } catch (error) {
+                console.error('Une erreur s\'est produite:', error);
+                alert('Une erreur s\'est produite. Veuillez réessayer.');
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <img id="hello" src="logo.png" alt="Logo">
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#" class="link active">HOME</a></li>
+                    <li><a href="infos.html" class="link">INFOS</a></li>
+                    <li><a href="contact.html" class="link">CONTACT</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="content">
+            <h3>Welcome To Your Own School</h3>
+            <p>Restez Informé Des Progrès Scolaires De Votre Enfant En Temps Réel</p>
+        </div>
+        <form class="form" id="loginForm">
+            <p class="heading">Login</p>
+            <input class="input" id="username" placeholder="Username" type="text" required>
+            <input class="input" id="password" placeholder="Password" type="password" required> 
+            <button id="button" class="btn" type="submit">Se Connecter</button>
+           
+        </form>
+    </div>
+    <!-- Link Bootstrap JS (optional, but needed for modal functionality) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+    <!--swiper js link-->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        
+    <!-- JavaScript for login -->
+    <script>
+        // Form submission for login
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the form from submitting and reloading the page
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/ProjectPFa/loginServlet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: username, password: password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Response data:', data); // Log the response data for debugging
+
+                    if (data.success) {
+                        alert('Connexion réussie !');
+
+                        // Store the username and enfants_id from the response data in localStorage
+                        localStorage.setItem('username', username); 
+                        localStorage.setItem('enfants_id', data.enfants_id);
+
+                        console.log('Username:', username); // Log the username from the input field
+                        console.log('Enfants ID:', data.enfants_id); // Log the enfants_id from the response data
+
+                        window.location.href = 'page2.html'; // Redirect to the next page
+                    } else {
+                        console.error('Login failed:', data);
+                        alert('Login failed: ' + data.message);
+                    }
+                } else {
+                    const errorData = await response.json();
+                    console.error('Connexion échouée:', errorData.message);
+                    alert('Connexion échouée: ' + errorData.message);
+                }
+            } catch (error) {
+                console.error('Une erreur s\'est produite:', error);
+                alert('Une erreur s\'est produite. Veuillez réessayer.');
+            }
+        });
+    </script>
+</body>
+</html>

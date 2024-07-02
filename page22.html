@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParentAlerte</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="page2.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <img src="téléchargement (1).jpeg" alt="Description de l'image">
+            <div class="label">
+                <label for="username">Nom complet:</label>
+                <input type="text" class="label-control" id="username" name="nomcomplet" readonly disabled>
+            </div>
+            <a href="#" class="button" onclick="showSection('Salle')">Salle</a>
+            <a href="#" class="button" onclick="showSection('Groupe')">Groupe</a>
+            <a href="#" class="button" onclick="showSection('Seance')">Séance</a>
+            <a href="#" class="button" onclick="showSection('Absence')">Absence</a>
+            <a href="#" class="button" onclick="showSection('Devoir')">Devoirs</a>
+            <a href="#" class="button" onclick="showSection('Classe')">Classe</a>
+            <a href="#" class="button" onclick="showSection('Recommandation')">Recommandation</a>
+        </div>
+        <div class="form-container">
+            <div id="Salle" class="section">
+                <h2>Tableau Salle</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Capacité</th>
+                        </tr>
+                    </thead>
+                    <tbody id="SalleData">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="Groupe" class="section">
+                <h2>Tableau Groupe</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Groupe</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="groupeData">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="Seance" class="section">
+                <h2>Tableau Séance</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Heure</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="seanceData">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="Absence" class="section">
+                <h2>Tableau Absence</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Raison</th>
+                        </tr>
+                    </thead>
+                    <tbody id="absenceData">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="Devoir" class="section">
+                <h2>Tableau Devoir</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="devoirData">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="Classe" class="section">
+                <h2>Tableau Classe</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Niveau</th>
+                        </tr>
+                    </thead>
+                    <tbody id="classeData">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="Recommandation" class="section">
+                <h2>Tableau de recommandations</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recommandationData">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="logout-btn">
+        <button class="Btn" onclick="confirmLogout()">
+            <div class="sign">
+                <svg viewBox="0 0 512 512">
+                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32"></path>
+                </svg>
+            </div>
+            <div class="text">Déconnexion</div>
+        </button>
+    </div>
+    <script>
+        const username = localStorage.getItem('username');
+        if (username !== null) {
+            document.getElementById("username").value = username;
+        }
+
+        async function fetchData(url, callback) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    const data = await response.json();
+                    callback(data);
+                } else {
+                    console.error(`Failed to fetch data from ${url}`);
+                }
+            } catch (error) {
+                console.error(`Error fetching data from ${url}:`, error);
+            }
+        }
+
+        function populateCoursSalle(data) {
+            const tbody = document.getElementById('SalleData');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.nom}</td><td>${item.capacite}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function populateGroupe(data) {
+            const tbody = document.getElementById('groupeData');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.groupe}</td><td>${item.description}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function populateSeance(data) {
+            const tbody = document.getElementById('seanceData');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.heure}</td><td>${item.date}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function populateAbsence(data) {
+            const tbody = document.getElementById('absenceData');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.date}</td><td>${item.raison}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function populateDevoir(data) {
+            const tbody = document.getElementById('devoirData');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.nom}</td><td>${item.description}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function populateClasse(data) {
+            const tbody = document.getElementById('classeData');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.nom}</td><td>${item.niveau}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function populateRecommandation(data) {
+            const tbody = document.getElementById('recommandationData');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.nom}</td><td>${item.description}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.display = section.id === sectionId ? 'block' : 'none';
+            });
+
+            const endpoints = {
+                'Salle': 'http://localhost:8080/ProjectPFa/salles',
+                'Groupe': 'http://localhost:8080/ProjectPFa/groupes',
+                'Seance': 'http://localhost:8080/ProjectPFa/seances',
+                'Absence': 'http://localhost:8080/ProjectPFa/absences',
+                'Devoir': 'http://localhost:8080/ProjectPFa/devoirs',
+                'Classe': 'http://localhost:8080/ProjectPFa/classes',
+                'Recommandation': 'http://localhost:8080/ProjectPFa/recommandations'
+            };
+
+            const callbacks = {
+                'Salle': populateCoursSalle,
+                'Groupe': populateGroupe,
+                'Seance': populateSeance,
+                'Absence': populateAbsence,
+                'Devoir': populateDevoir,
+                'Classe': populateClasse,
+                'Recommandation': populateRecommandation
+            };
+
+            if (endpoints[sectionId]) {
+                fetchData(endpoints[sectionId], callbacks[sectionId]);
+            }
+        }
+
+        function confirmLogout() {
+            const confirmLogout = confirm("Êtes-vous sûr de vouloir vous déconnecter?");
+            if (confirmLogout) {
+                // Clear local storage and redirect to login page
+                localStorage.clear();
+                window.location.href = "home.html";
+            }
+        }
+
+        // Show default section on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            showSection('Salle');
+        });
+    </script>
+</body>
+</html>

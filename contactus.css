@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('contactus1.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    justify-content: flex-start; /* Align items to the start (left) */
+    align-items: center;
+    padding: 50px;
+    width: 100%; /* Ensure container takes full width */
+}
+
+.contact-info {
+    text-align: left; /* Align text to the left */
+    color: black; /* Ensure text is readable on background image */
+}
+
+.contact-info h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+    font-size: 1.2em; /* Makes text slightly larger for readability */
+}
